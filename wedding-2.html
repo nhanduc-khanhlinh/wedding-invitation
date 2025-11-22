@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhân Đức & Khánh Linh - Wedding Invitation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Playfair Display', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://res.cloudinary.com/digbreiqz/image/upload/v1763827810/A_T01586_hyrhca.jpg') center/cover;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            z-index: 2;
+            padding: 40px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .couple-names-hero {
+            font-size: 64px;
+            font-weight: 300;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        .ampersand {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 80px;
+            margin: 0 20px;
+            opacity: 0.9;
+        }
+
+        .wedding-tagline {
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Countdown */
+        .countdown-section {
+            padding: 60px 20px;
+            background: #f8f8f8;
+            text-align: center;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .countdown-number {
+            font-size: 56px;
+            color: #c9a96e;
+            font-weight: bold;
+            display: block;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 30px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            line-height: 1.8;
+        }
+
+        /* Couple Section */
+        .couple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .person-card {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .person-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .person-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 30px;
+            display: block;
+            border: 5px solid #c9a96e;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .person-name {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .person-parents {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .person-number {
+            font-size: 80px;
+            color: #c9a96e;
+            opacity: 0.3;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            background: #f8f8f8;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Events Section */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .event-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .event-content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .event-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .event-location {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .event-time {
+            font-size: 18px;
+            color: #c9a96e;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .event-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: 2px solid #c9a96e;
+            background: transparent;
+            color: #c9a96e;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #c9a96e;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #c9a96e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b89860;
+        }
+
+        /* Guest Book Section */
+        .guestbook {
+            background: #f8f8f8;
+        }
+
+        .guestbook-form {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c9a96e;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .wishes-list {
+            max-width: 800px;
+            margin: 60px auto 0;
+        }
+
+        .wish-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #c9a96e;
+        }
+
+        .wish-author {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .wish-message {
+            color: #666;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* Save the Date CTA */
+        .cta-section {
+            background: linear-gradient(135deg, #c9a96e 0%, #b89860 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .cta-names {
+            font-size: 48px;
+            margin: 20px 0;
+            font-weight: 300;
+        }
+
+        .cta-message {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 30px auto;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 60px 20px 30px;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .footer-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #c9a96e;
+        }
+
+        .footer-copyright {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Divider */
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: #c9a96e;
+            margin: 30px auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .couple-names-hero {
+                font-size: 36px;
+            }
+
+            .ampersand {
+                font-size: 48px;
+                margin: 0 10px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .couple-grid,
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .countdown {
+                gap: 20px;
+            }
+
+            .countdown-number {
+                font-size: 40px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Navigation */
+        .floating-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #c9a96e;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            background: #b89860;
+        }
+
+        /* Invitation Card Section */
+        .invitation-card-section {
+            background: #861717;
+        }
+
+        .invitation-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fdfcfa;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .invitation-header {
+            font-size: 15.5px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+
+        .invitation-names {
+        }
+
+        .invitation-name {
+            font-family: 'Brush Script MT', 'Edwardian Script ITC', cursive;
+            font-size: 48px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .invitation-and {
+            font-size: 20px;
+            color: #666;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        .invitation-details {
+            margin: 40px 0;
+            padding: 30px 0;
+            border-top: 1px solid #d4d4d4;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+        .invitation-detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .invitation-detail-label {
+            text-align: right;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .invitation-detail-value {
+            text-align: left;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .invitation-date-label {
+            font-size: 13px;
+            color: #888;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .invitation-location {
+            margin: 25px 0;
+        }
+
+        .invitation-location-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .invitation-location-address {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .invitation-parents {
+            margin-top: 35px;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .invitation-parent-group {
+            text-align: center;
+        }
+
+        .invitation-parent-label {
+            font-size: 13px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .invitation-parent-name {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .invitation-card {
+                padding: 15px 25px;
+            }
+
+            .invitation-name {
+                font-size: 36px;
+            }
+
+            .invitation-detail-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+                text-align: center;
+            }
+
+            .invitation-detail-label,
+            .invitation-detail-value {
+                text-align: center;
+            }
+
+            .invitation-parents {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content fade-in">
+            <div class="hero-subtitle">We're Getting Married</div>
+            <h1 class="couple-names-hero">
+                Nhân Đức <span class="ampersand">&</span> Khánh Linh
+            </h1>
+            <div class="divider" style="background: white;"></div>
+            <p class="wedding-tagline">Save The Date</p>
+        </div>
+    </div>
+
+    <!-- Invitation Card Section -->
+    <div class="invitation-card-section">
+        <div class="container">
+            <div class="invitation-card">
+                <div class="invitation-header">
+                    Trân trọng kính mời Quý Khách<br>
+                    tới dự tiệc mừng lễ thành hôn của hai chúng tôi
+                </div>
+
+                <div class="invitation-names">
+                    <div class="invitation-name" style="text-align: left;">Hoàng Nhân Đức</div>
+                    <div class="invitation-and">và</div>
+                    <div class="invitation-name" style="text-align: right;">Trịnh Khánh Linh</div>
+                </div>
+
+                <div class="invitation-details">
+                    <div class="invitation-detail-row">
+                        <div class="invitation-detail-label">GIỜ 11:00 - NGÀY 14 - 12 - 2025</div>
+                    </div>
+                    <div class="invitation-date-label">
+                        Tức Ngày 25 Tháng 10 năm Ất Tỵ
+                    </div>
+                </div>
+
+                <div class="invitation-location">
+                    <div class="invitation-location-title">
+                        TRUNG TÂM TỔ CHỨC SỰ KIỆN WHITE PALACE
+                    </div>
+                    <div class="invitation-location-address">
+                        Đại lộ Võ Nguyên Giáp, Phường Hạc Thành, Thành phố Thanh Hoá
+                    </div>
+                </div>
+
+                <div class="invitation-parents">
+                    <div class="invitation-parent-group">
+                        <div class="invitation-parent-label">NHÀ TRAI</div>
+                        <div class="invitation-parent-name">
+                            Ông Hoàng Nam Lân<br>
+                            Bà Kiều Thị Hoa
+                        </div>
+                    </div>
+                    <div class="invitation-parent-group">
+                        <div class="invitation-parent-label">NHÀ GÁI</div>
+                        <div class="invitation-parent-name">
+                            Ông Trịnh Văn Anh<br>
+                            Bà Đinh Thị Thu Hồng
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Couple Section -->
+    <div class="section" id="couple">
+        <div class="container">
+            <h2 class="section-title">Cặp Đôi</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">
+                "Tình yêu là điều kiện trong đó hạnh phúc của người khác là điều cần thiết cho chính bạn."
+            </p>
+
+            <div class="couple-grid">
+                <div class="person-card">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828956/A_T01449_lotnl9.jpg" 
+                         alt="Hoàng Nhân Đức" class="person-image" style="object-position: 0 30%;">
+                    <h3 class="person-name">Hoàng Nhân Đức</h3>
+                    <div class="person-parents">
+                        <p><strong>Con ông:</strong> Hoàng Nam Lân</p>
+                        <p><strong>Con bà:</strong> Kiều Thị Hoa</p>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828954/A_T01388_yzadfk.jpg" 
+                         alt="Trịnh Khánh Linh" class="person-image">
+                    <h3 class="person-name">Trịnh Khánh Linh</h3>
+                    <div class="person-parents">
+                        <p><strong>Con ông:</strong> Trịnh Văn Anh</p>
+                        <p><strong>Con bà:</strong> Đinh Thị Thu Hồng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Events Section -->
+    <div class="section" id="event">
+        <div class="container">
+            <h2 class="section-title">Timeline</h2>
+            <div class="divider"></div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828614/03954252-1759-45cd-afcf-02071f951bfe_n2nwft.jpg" 
+                         alt="Lễ Nạp Tài" class="event-image">
+                    <div class="event-content">
+                        <h3 class="event-title">LỄ NẠP TÀI</h3>
+                        <p class="event-location">
+                            TƯ GIA NHÀ GÁI<br>
+                            11 Lương Hữu Khánh, Phường Hạc Thành, Thành phố Thanh Hoá
+                        </p>
+                        <p class="event-time">07:00, 14/12/2025</p>
+                        <div class="event-buttons">
+                            <a href="https://maps.app.goo.gl/1w53bRUD4SDso5q9A" class="btn" target="_blank">XEM ĐỊA CHỈ</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828489/A_T01678_p0kn6b.jpg" 
+                         alt="Lễ Thành Hôn" class="event-image" style="object-position: 0% 30%;">
+                    <div class="event-content">
+                        <h3 class="event-title">LỄ THÀNH HÔN</h3>
+                        <p class="event-location">
+                            TRUNG TÂM TỔ CHỨC SỰ KIỆN WHITE PALACE<br>
+                            Đại lộ Võ Nguyên Giáp, Phường Hạc Thành, Thành phố Thanh Hoá
+                        </p>
+                        <p class="event-time">11:00, 14/12/2025</p>
+                        <div class="event-buttons">
+                            <a href="https://maps.app.goo.gl/s9cUv5bxKWvdWoay7" class="btn" target="_blank">XEM ĐỊA CHỈ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="section gallery" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Album Hình Cưới</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">
+                "Được ai đó yêu sâu sắc sẽ mang lại cho bạn sức mạnh, trong khi yêu ai đó sâu sắc sẽ cho bạn dũng khí."
+            </p>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828614/03954252-1759-45cd-afcf-02071f951bfe_n2nwft.jpg" alt="Wedding Photo 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828489/A_T01678_p0kn6b.jpg" alt="Wedding Photo 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763828614/03954252-1759-45cd-afcf-02071f951bfe_n2nwft.jpg" alt="Wedding Photo 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763827810/A_T01586_hyrhca.jpg" alt="Wedding Photo 4">
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Wedding Photo 5">
+                </div>
+                <div class="gallery-item">
+                    <img src="" alt="Wedding Photo 6">
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#" class="btn btn-primary" onclick="alert('Xem thêm ảnh'); return false;">TẤT CẢ HÌNH ẢNH</a>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- Save the Date CTA -->
+    <div class="cta-section">
+        <div class="container">
+            <p class="cta-title">Save the Date</p>
+            <p style="font-size: 16px; opacity: 0.9; margin-bottom: 10px;">For the wedding of</p>
+            <h2 class="cta-names">Nhân Đức & Khánh Linh</h2>
+            <div class="divider" style="background: white;"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <h3 class="footer-title">Thank You!</h3>
+            <p class="footer-subtitle">Nhân Đức - Khánh Linh</p>
+
+            <div class="footer-copyright">
+                © 2025 Nhân Đức & Khánh Linh. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <a href="#" class="nav-btn" title="Scroll to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
+    </div>
+
+    <script>
+        // Countdown Timer - Wedding on December 8, 2025 at 10:00 (Lễ Cưới Nhà Trai)
+        function updateCountdown() {
+            const weddingDate = new Date('2025-12-08T10:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h2 style="color: #c9a96e;">🎉 Chúng tôi đã kết hôn! 🎉</h2>';
+            }
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Guest Book Form Handler
+        function addWish(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+
+            if (name && message) {
+                const wishCard = document.createElement('div');
+                wishCard.className = 'wish-card';
+                wishCard.innerHTML = `
+                    <div class="wish-author">${escapeHtml(name)}</div>
+                    <div class="wish-message">${escapeHtml(message)}</div>
+                `;
+
+                const wishesList = document.getElementById('wishesList');
+                wishesList.insertBefore(wishCard, wishesList.firstChild);
+
+                // Reset form
+                document.getElementById('wishForm').reset();
+
+                // Show success message
+                alert('Cảm ơn bạn đã gửi lời chúc! ❤️');
+            }
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
