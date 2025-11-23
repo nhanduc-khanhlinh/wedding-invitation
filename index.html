@@ -143,7 +143,7 @@
 
         .person-card {
             text-align: center;
-            padding: 40px;
+            padding: 40px 25px;
             background: #fff;
             border-radius: 15px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.1);
@@ -468,6 +468,8 @@
         @media (max-width: 768px) {
             .couple-names-hero {
                 font-size: 36px;
+                display: flex;
+                flex-direction: column;
             }
 
             .ampersand {
@@ -686,6 +688,129 @@
                 gap: 20px;
             }
         }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.5);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(201, 169, 110, 0.8);
+            transform: rotate(90deg);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .modal-nav:hover {
+            background: rgba(201, 169, 110, 0.8);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-close {
+                top: 10px;
+                right: 10px;
+                font-size: 40px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal-nav {
+                font-size: 30px;
+                width: 50px;
+                height: 50px;
+                padding: 10px;
+            }
+
+            .modal-prev {
+                left: 10px;
+            }
+
+            .modal-next {
+                right: 10px;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                max-height: 80vh;
+            }
+        }
     </style>
 </head>
 <body>
@@ -694,7 +819,9 @@
         <div class="hero-content fade-in">
             <div class="hero-subtitle">We're Getting Married</div>
             <h1 class="couple-names-hero">
-                Nhân Đức <span class="ampersand">&</span> Khánh Linh
+                <span>Nhân Đức</span>
+                <span class="ampersand">&</span>
+                <span>Khánh Linh</span>
             </h1>
             <div class="divider" style="background: white;"></div>
             <p class="wedding-tagline">Save The Date</p>
@@ -857,10 +984,6 @@
                     <img src="https://res.cloudinary.com/digbreiqz/image/upload/v1763904272/5a24c715-7634-479a-a724-06fd4b5747ba_zqu2vg.jpg" alt="Wedding Photo 6">
                 </div>
             </div>
-
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="#" class="btn btn-primary" onclick="alert('Xem thêm ảnh'); return false;">TẤT CẢ HÌNH ẢNH</a>
-            </div>
         </div>
     </div>
 
@@ -893,9 +1016,89 @@
         <a href="#" class="nav-btn" title="Scroll to top" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">↑</a>
     </div>
 
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeModal(event)">
+        <span class="modal-close" onclick="closeModal(event)">&times;</span>
+        <span class="modal-nav modal-prev" onclick="changeImage(-1, event)">&#10094;</span>
+        <img class="modal-content" id="modalImage" alt="Full size image">
+        <span class="modal-nav modal-next" onclick="changeImage(1, event)">&#10095;</span>
+    </div>
+
     <script>
+        // Image Modal Functionality
+        let currentImageIndex = 0;
+        let galleryImages = [];
+
+        // Initialize gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            galleryImages = Array.from(galleryItems).map(img => img.src);
+            
+            galleryItems.forEach((img, index) => {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', () => openModal(index));
+            });
+        });
+
+        function openModal(index) {
+            currentImageIndex = index;
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modal.classList.add('active');
+            modalImg.src = galleryImages[currentImageIndex];
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('image-modal') || 
+                event.target.classList.contains('modal-close')) {
+                const modal = document.getElementById('imageModal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            }
+        }
+
+        function changeImage(direction, event) {
+            event.stopPropagation();
+            currentImageIndex += direction;
+            
+            if (currentImageIndex >= galleryImages.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = galleryImages.length - 1;
+            }
+            
+            const modalImg = document.getElementById('modalImage');
+            modalImg.style.opacity = '0';
+            
+            setTimeout(() => {
+                modalImg.src = galleryImages[currentImageIndex];
+                modalImg.style.opacity = '1';
+            }, 150);
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('imageModal');
+                if (modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            } else if (event.key === 'ArrowLeft') {
+                changeImage(-1, event);
+            } else if (event.key === 'ArrowRight') {
+                changeImage(1, event);
+            }
+        });
+
         // Countdown Timer - Wedding on December 8, 2025 at 10:00 (Lễ Cưới Nhà Trai)
         function updateCountdown() {
+            // Check if countdown elements exist
+            const daysElement = document.getElementById('days');
+            if (!daysElement) return; // Exit if countdown doesn't exist
+            
             const weddingDate = new Date('2025-12-08T10:00:00').getTime();
             const now = new Date().getTime();
             const distance = weddingDate - now;
@@ -905,13 +1108,16 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            daysElement.textContent = String(days).padStart(2, '0');
             document.getElementById('hours').textContent = String(hours).padStart(2, '0');
             document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
             document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
             if (distance < 0) {
-                document.getElementById('countdown').innerHTML = '<h2 style="color: #c9a96e;">🎉 Chúng tôi đã kết hôn! 🎉</h2>';
+                const countdownElement = document.getElementById('countdown');
+                if (countdownElement) {
+                    countdownElement.innerHTML = '<h2 style="color: #c9a96e;">🎉 Chúng tôi đã kết hôn! 🎉</h2>';
+                }
             }
         }
 
