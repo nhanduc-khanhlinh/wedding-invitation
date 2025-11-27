@@ -995,6 +995,44 @@
         </div>
     </div>
 
+    <!-- Lời Chúc Section -->
+    <div class="section guestbook" id="loichuc">
+        <div class="container">
+            <h2 class="section-title">Sổ Lưu Bút</h2>
+            <div class="divider"></div>
+            <p class="section-subtitle">
+                Cảm ơn bạn rất nhiều vì đã gửi những lời chúc mừng tốt đẹp nhất đến đám cưới của chúng tôi!
+            </p>
+
+            <!-- Wish Form -->
+            <div class="guestbook-form">
+                <form id="wishForm" onsubmit="submitWish(event)">
+                    <div class="form-group">
+                        <label for="guestName">Tên của bạn *</label>
+                        <input type="text" id="guestName" name="guestName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guestMessage">Lời chúc của bạn *</label>
+                        <textarea id="guestMessage" name="guestMessage" required></textarea>
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            GỬI LỜI CHÚC
+                        </button>
+                    </div>
+                    <div id="formMessage" style="text-align: center; margin-top: 15px; display: none;"></div>
+                </form>
+            </div>
+
+            <!-- Wishes Display -->
+            <div class="wishes-list" id="wishesList">
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: #888;">Đang tải lời chúc...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <div class="footer">
         <div class="container">
@@ -1121,30 +1159,127 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Guest Book Form Handler
-        function addWish(event) {
+        // ===== GOOGLE SHEETS INTEGRATION =====
+        // Replace this with your Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFnbL3irHLcjQMgxPr-NEKqGt5Gt7MSBIUo_SIuvvgviSbUGELezCK2GRzd9hPWV4HLw/exec';
+
+        // Submit wish to Google Sheets
+        async function submitWish(event) {
             event.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const message = document.getElementById('message').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const name = document.getElementById('guestName').value.trim();
+            const message = document.getElementById('guestMessage').value.trim();
 
-            if (name && message) {
-                const wishCard = document.createElement('div');
-                wishCard.className = 'wish-card';
-                wishCard.innerHTML = `
-                    <div class="wish-author">${escapeHtml(name)}</div>
-                    <div class="wish-message">${escapeHtml(message)}</div>
-                `;
-
-                const wishesList = document.getElementById('wishesList');
-                wishesList.insertBefore(wishCard, wishesList.firstChild);
-
-                // Reset form
-                document.getElementById('wishForm').reset();
-
-                // Show success message
-                alert('Cảm ơn bạn đã gửi lời chúc! ❤️');
+            if (!name || !message) {
+                showMessage('Vui lòng điền đầy đủ thông tin!', 'error');
+                return;
             }
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang gửi...';
+
+            try {
+                // Using GET method with query parameters to avoid CORS issues
+                const params = new URLSearchParams({
+                    action: 'addWish',
+                    name: name,
+                    message: message,
+                    timestamp: new Date().toISOString()
+                });
+
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    showMessage('Cảm ơn bạn đã gửi lời chúc! ❤️', 'success');
+                    document.getElementById('wishForm').reset();
+                    // Reload wishes to show the new one
+                    setTimeout(() => loadWishes(), 1000);
+                } else {
+                    showMessage('Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'GỬI LỜI CHÚC';
+            }
+        }
+
+        // Load wishes from Google Sheets
+        async function loadWishes() {
+            const wishesList = document.getElementById('wishesList');
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getWishes');
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data && result.data.length > 0) {
+                    wishesList.innerHTML = '';
+                    
+                    result.data.forEach(wish => {
+                        const wishCard = document.createElement('div');
+                        wishCard.className = 'wish-card';
+                        wishCard.innerHTML = `
+                            <div class="wish-author">${escapeHtml(wish.name)}</div>
+                            <div class="wish-message">${escapeHtml(wish.message)}</div>
+                            ${wish.timestamp ? `<div style="font-size: 12px; color: #999; margin-top: 10px;">${formatDate(wish.timestamp)}</div>` : ''}
+                        `;
+                        wishesList.appendChild(wishCard);
+                    });
+                } else {
+                    wishesList.innerHTML = '<div style="text-align: center; padding: 40px;"><p style="color: #888;">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc!</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading wishes:', error);
+                wishesList.innerHTML = '<div style="text-align: center; padding: 40px;"><p style="color: #888;">Không thể tải lời chúc. Vui lòng thử lại sau.</p></div>';
+            }
+        }
+
+        // Show message to user
+        function showMessage(msg, type) {
+            const formMessage = document.getElementById('formMessage');
+            formMessage.textContent = msg;
+            formMessage.style.display = 'block';
+            formMessage.style.padding = '10px';
+            formMessage.style.borderRadius = '5px';
+            formMessage.style.color = type === 'success' ? '#28a745' : '#dc3545';
+            formMessage.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+            formMessage.style.border = `1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'}`;
+
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+        // Load wishes when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWishes();
+        });
+
+        // Old function kept for compatibility
+        function addWish(event) {
+            event.preventDefault();
+            submitWish(event);
         }
 
         // Escape HTML to prevent XSS
